@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "lib",
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -18,5 +19,5 @@
       "microrouter"
     ]
   },
-  "include": ["lib/**/*", "node_modules/@types/**/*"]
+  "include": ["lib/**/*"]
 }
