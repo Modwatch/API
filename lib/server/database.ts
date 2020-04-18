@@ -1,18 +1,14 @@
 import { MongoClient, Collection } from "mongodb";
 
-import { config } from "../config/db";
 import { generateHash, validPassword, verifyToken } from "./utils";
 import sanitize from "mongo-sanitize";
 
 import { Modlist, FileName } from "@modwatch/types";
 
 const client = MongoClient.connect(
-  config({
-    username: process.env.DBUSERNAME,
-    password: process.env.DBPASSWORD,
-    env: process.env.NODE_ENV
-  }),
+  "mongodb://localhost:27017/modwatch",
   {
+    useUnifiedTopology: true,
     useNewUrlParser: true
   }
 );
@@ -36,7 +32,7 @@ export async function getUsersList({
 
 export async function getUsersCount(): Promise<number> {
   const modlist = await initializeModlistCollection();
-  return modlist.count({});
+  return modlist.estimatedDocumentCount();
 }
 
 export async function getProfile({
