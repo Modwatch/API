@@ -18,9 +18,11 @@ import { getProfile, deleteProfile } from "../database";
 
 const renderFileAsync = promisify(renderFile);
 
-const clients = [
+const clients = process.env.NODE_ENV === "production" ? [
   "https://modwat.ch",
   "https://modwatch-staging.firebaseapp.com"
+] : [
+  "http://localhost:5000"
 ];
 
 export const routes = [

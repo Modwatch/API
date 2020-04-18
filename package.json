@@ -9,7 +9,7 @@
   "scripts": {
     "start": "pm2 start server.js",
     "restart": "pm2 restart all",
-    "dev": "node -r sucrase/register/ts -r dotenv/config ./node_modules/.bin/micro-dev ./dist/server/micro.js -w ./lib/ -p 3001",
+    "dev": "cross-env NODE_ENV=development API_ENV=development node -r sucrase/register/ts -r dotenv/config ./node_modules/.bin/micro-dev ./lib/server/micro.ts -w ./lib/ -p 3001",
     "prettier": "prettier --write '{server.js,lib/**/*.ts}'",
     "build": "tsc && cp ./lib/server/oauth.ejs ./dist/server/"
   },
