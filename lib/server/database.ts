@@ -5,8 +5,10 @@ import sanitize from "mongo-sanitize";
 
 import { Modlist, FileName } from "@modwatch/types";
 
+const mongoConnectionString = `mongodb://${process.env.DB_HOST || "localhost"}:${process.env.DB_PORT || "27017"}/modwatch`;
+console.log(`Connecting to mongo: ${mongoConnectionString}`);
 const client = MongoClient.connect(
-  "mongodb://localhost:27017/modwatch",
+  mongoConnectionString,
   {
     useUnifiedTopology: true,
     useNewUrlParser: true

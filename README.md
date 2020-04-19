@@ -1,41 +1,76 @@
-TO BUILD
-==
-
 ### Dependencies
 
 1. [NodeJS/NPM](https://nodejs.org) (Latest Stable Version)
-2. [Gulp](http://gulpjs.com) (`sudo npm install -g gulp`)
+1. [Mongo](https://www.mongodb.com/download-center/community)
+  - alternatively, [the docker image](https://hub.docker.com/_/mongo), run script is at the top of `/scripts/clone-database.sh`
 
 ### Setup
 
-1. `cd` to this directory
-2. `npm install`
-4. `gulp`
-5. `npm start`
+1. populate a local `.env` file
+```ini
+DBPASSWORD=password ; should match your mongo instance username
+DBUSERNAME=username ; should match your mongo instance password
+JWTSECRET=jwtsecret
+NODE_ENV=production
+DB_HOST=modwatch-db ; or localhost
+```
+2. `npm ci`
+2. `npm run dev`
+    - this runs against a mongo instance at `mongo://localhost:27017/modwatch`
+    - You will need to populate that database via the uploader or some other means
+2. APi is served at http://localhost:3001
 
-GENERAL
-==
+### Run
 
-This is a MEAN stack app without the A(ngular). It is the API for [modwatch](http://github.com/ansballard/modwatch). It is fairly simple, just taking in JSON from the [uploader](http://github.com/ansballard/modwatchuploader), storing it at mongolab, and serving it out via API routes.
+```sh
+# build and run using docker, linking to a docker mongo instance named modwatch-db
+docker build -t modwatch-api ./
+docker run \
+  --rm \ # throw away container on exit
+  -it \ # show output in interactive terminal
+  -p 3001:3001 \ # open port 3001
+  --link modwatch-db:modwatch-db \ # link to a container named modwatch-db
+  --env-file .env \ # inject variables from a .env file in the cwd
+  --name modwatch-api \ # name the container modwatch-api
+  modwatch-api # use the image tagged in the previous command
+```
 
-The general shape of the API is taking in data through `/loadorder`, which is only hit by the uploader. This route takes username, password, some descriptive fields, and file contents from Skyrim mod files as arrays. This is stored in MongoDB. The data is retrieved by the frontend site, which will pull anything from user profile data (types of files, username, last upload timestamp) to actual file data. All API routes are open, all data is available.
+```sh
+# build (rebuild/restart on change) and run locally (http://localhost:5000)
+npm run dev
+```
 
-CONTRIBUTING
-==
+```sh
+# build and run (http://localhost:5000)
+npm run build
+npm start
+```
+
+### Tech Stack
+
+- REST(ish)
+- [Typescript](https://github.com/microsoft/TypeScript) ([sucrase](https://github.com/alangpierce/sucrase) when developing)
+- [Micro](https://github.com/zeit/micro) ([micro-dev](https://github.com/zeit/micro-dev) when developing)
+- [Mongodb](https://www.mongodb.com)
+
+### CONTRIBUTING
 
 1. Fork this repo
-2. Open an issue for the problem/enhancement you want to work on
-3. Create a branch that has to do with the issue you want to fix
-4. Implement your changes
-5. Make a pull request to this repo
-6. If there are no merge conflicts, and I've already approved the issue you created, I'll most likely merge your changes in
+1. Open an issue for the problem/enhancement you want to work on
+1. Create a branch that has to do with the issue you want to fix
+1. Implement your changes, most likely in the `/lib` directory
+1. make sure `npm run build` completes
+1. run `npm run prettier`, preferably in a standalone commit
+1. Make a pull request to this repo
+1. If there are no merge conflicts, and I've already approved the issue you created, I'll most likely merge your changes
 
-When making changes, do your best to follow the standards already set in other parts of the repo. Changes should not be noticeable when looking through source code. I would prefer all changes pass `eslint` with the `.eslintrc` in the root directory.
+### LINKS
 
-LINKS
-==
-
-- [The Live Site](http://www.modwat.ch)
-- [The Nexus Mods Page](http://nexusmods.com/skyrim/mods/56640)
-- [The Frontend](http://github.com/ansballard/modwatch)
-- [The Uploader](http://github.com/ansballard/modwatchuploader)
+- [Live Site](https://modwat.ch)
+- [Live API](https://api.modwat.ch)
+- [Nexus Mods Page](http://nexusmods.com/skyrim/mods/56640)
+- [API](http://github.com/Modwatch/API)
+- [Common Library](http://github.com/Modwatch/Core)
+- [Frontend](http://github.com/Modwatch/Frontend)
+- [Typescript Models](http://github.com/Modwatch/Types)
+- [Uploader](http://github.com/Modwatch/Uploader)

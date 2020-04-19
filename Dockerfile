@@ -1,4 +1,4 @@
-FROM node:12-alpine as builder
+FROM node:13-alpine as builder
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm ci
 COPY lib/ /app/lib/
 RUN mkdir -p dist/server && npm run build
 
-FROM node:12-alpine as runner
+FROM node:13-alpine as runner
 
 WORKDIR /app
 
@@ -17,4 +17,4 @@ RUN npm ci --only=production
 COPY server.js /app/
 COPY --from=builder /app/dist /app/dist
 
-CMD node -r dotenv/config /app/server.js
+CMD node /app/server.js
