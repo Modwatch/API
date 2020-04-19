@@ -16,11 +16,11 @@ export const supportedFiletypes: FileName[] = [
   "plugins",
   "modlist",
   "ini",
-  "prefsini"
+  "prefsini",
 ];
 
 export const usernameRegex = {
-  segmentValueCharset: "a-zA-Z0-9-_~ %@!\\.'\\(\\)\\[\\]"
+  segmentValueCharset: "a-zA-Z0-9-_~ %@!\\.'\\(\\)\\[\\]",
 };
 
 export function validFiletype(filetype: string): boolean {
@@ -54,14 +54,16 @@ export function getToken(req: ServerRequest): string {
   } catch (e) {
     throw {
       httpStatus: 401,
-      message: "Invalid Token"
+      message: "Invalid Token",
     };
   }
 }
 
 export function serialize(query: object): string {
   return Object.keys(query)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+    .map(
+      (key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`
+    )
     .join("&");
 }
 
@@ -73,13 +75,13 @@ export async function generateToken(
   if (!profile) {
     throw {
       httpStatus: 404,
-      message: "Profile Not Found"
+      message: "Profile Not Found",
     };
   }
   if (!(await validPassword(password, profile.password))) {
     throw {
       httpStatus: 401,
-      message: "Invalid Login"
+      message: "Invalid Login",
     };
   }
   return encode({ username }, process.env.JWTSECRET);
@@ -91,14 +93,14 @@ export function verifyToken(token: string): any {
     if (!decoded || !decoded.sub) {
       throw {
         httpStatus: 401,
-        message: "Invalid Token"
+        message: "Invalid Token",
       };
     }
     return decoded;
   } catch (e) {
     throw {
       httpStatus: 401,
-      message: "Invalid Token"
+      message: "Invalid Token",
     };
   }
 }
@@ -106,7 +108,7 @@ export function verifyToken(token: string): any {
 exports.serializeStreamToJSONArray = function serializeStreamToJSONArray({
   cursor,
   res,
-  serializer
+  serializer,
 }: SerializeStreamToJSONParameters): Promise<number> {
   return new Promise((resolve, reject) => {
     res.write("[");

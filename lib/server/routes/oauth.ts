@@ -12,18 +12,16 @@ import {
   serialize,
   verifyToken,
   validPassword,
-  usernameRegex
+  usernameRegex,
 } from "../utils";
 import { getProfile, deleteProfile } from "../database";
 
 const renderFileAsync = promisify(renderFile);
 
-const clients = process.env.NODE_ENV === "production" ? [
-  "https://modwat.ch",
-  "https://modwatch-staging.firebaseapp.com"
-] : [
-  "http://localhost:5000"
-];
+const clients =
+  process.env.NODE_ENV === "production"
+    ? ["https://modwat.ch", "https://modwatch-staging.firebaseapp.com"]
+    : ["http://localhost:5000"];
 
 export const routes = [
   get("/oauth/authorize", async (req: ServerRequest, res: ServerResponse) => {
@@ -32,7 +30,7 @@ export const routes = [
       200,
       await renderFileAsync(join(__dirname, "..", "oauth.ejs"), {
         params: req.query,
-        querystring: serialize(req.query)
+        querystring: serialize(req.query),
       })
     );
   }),
@@ -53,7 +51,7 @@ export const routes = [
     try {
       const body = (await parse(req)) as Modwatch.Profile;
       const scopes = body.scopes || [];
-      if (clients.every(c => req.query.redirect_uri.indexOf(c) !== 0)) {
+      if (clients.every((c) => req.query.redirect_uri.indexOf(c) !== 0)) {
         res.statusCode = 301;
         res.setHeader(
           "Location",
@@ -64,7 +62,7 @@ export const routes = [
         res.end();
         return;
       }
-      if (["username", "password"].filter(q => !!body[q]).length !== 2) {
+      if (["username", "password"].filter((q) => !!body[q]).length !== 2) {
         res.statusCode = 301;
         res.setHeader(
           "Location",
@@ -79,7 +77,7 @@ export const routes = [
       if (!profile) {
         throw {
           httpStatus: 404,
-          message: "Profile Not Found"
+          message: "Profile Not Found",
         };
       }
       const roles = profile.roles ? [].concat(profile.roles).sort() : [];
@@ -107,7 +105,7 @@ export const routes = [
         sub: profile.username,
         iat,
         exp: iat + 3600 * 1000,
-        scopes: [...new Set(["user"].concat(scopes).concat(roles))]
+        scopes: [...new Set(["user"].concat(scopes).concat(roles))],
       };
       res.statusCode = 301;
       res.setHeader(
@@ -145,12 +143,12 @@ export const routes = [
           return;
         }
         const profile = await getProfile({
-          username: decodeURIComponent(req.params.username)
+          username: decodeURIComponent(req.params.username),
         });
         if (!profile) {
           throw {
             httpStatus: 404,
-            message: "Profile Not Found"
+            message: "Profile Not Found",
           };
         }
         if (profile.roles.includes("admin")) {
@@ -168,5 +166,5 @@ export const routes = [
         send(res, e.httpStatus || 500, e.message || null);
       }
     }
-  )
+  ),
 ];

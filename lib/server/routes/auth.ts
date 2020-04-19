@@ -23,5 +23,5 @@ export const routes = [
       console.log(e);
       send(res, e.httpStatus || 500, e.message || null);
     }
-  })
+  }),
 ];

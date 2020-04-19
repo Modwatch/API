@@ -16,5 +16,5 @@ export const routes = [
   ...user,
   ...upload,
   ...auth,
-  ...oauth
+  ...oauth,
 ];

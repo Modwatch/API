@@ -28,7 +28,7 @@ export const routes = [
           limit:
             typeof req.params.limit !== "undefined"
               ? +req.params.limit
-              : undefined
+              : undefined,
         });
         send(res, 200, users);
       } catch (e) {
@@ -46,5 +46,5 @@ export const routes = [
       );
       send(res, 200, users);
     }
-  )
+  ),
 ];

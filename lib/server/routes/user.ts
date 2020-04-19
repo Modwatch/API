@@ -18,12 +18,12 @@ export const routes = [
       }
       try {
         const profile = await getProfile({
-          username: decodeURIComponent(req.params.username)
+          username: decodeURIComponent(req.params.username),
         });
         if (!profile) {
           throw {
             httpStatus: 404,
-            message: "Profile Not Found"
+            message: "Profile Not Found",
           };
         }
         if (profile[req.params.filetype]) {
@@ -32,7 +32,7 @@ export const routes = [
         }
         throw {
           httpStatus: 404,
-          message: "Filetype Not Found"
+          message: "Filetype Not Found",
         };
       } catch (e) {
         console.log(e);
@@ -46,12 +46,12 @@ export const routes = [
     async (req: ServerRequest, res: ServerResponse) => {
       try {
         const profile = await getProfile({
-          username: decodeURIComponent(req.params.username)
+          username: decodeURIComponent(req.params.username),
         });
         if (!profile) {
           throw {
             httpStatus: 404,
-            message: "Profile Not Found"
+            message: "Profile Not Found",
           };
         }
         const { timestamp, tag, game, enb, score } = profile;
@@ -68,19 +68,19 @@ export const routes = [
     async (req: ServerRequest, res: ServerResponse) => {
       try {
         const profile = await getProfile({
-          username: decodeURIComponent(req.params.username)
+          username: decodeURIComponent(req.params.username),
         });
         if (!profile) {
           throw {
             httpStatus: 404,
-            message: "Profile Not Found"
+            message: "Profile Not Found",
           };
         }
         send(
           res,
           200,
           Object.keys(profile).filter(
-            t => validFiletype(t) && profile[t] && profile[t].length > 0
+            (t) => validFiletype(t) && profile[t] && profile[t].length > 0
           )
         );
       } catch (e) {
@@ -95,12 +95,12 @@ export const routes = [
     async (req: ServerRequest, res: ServerResponse) => {
       try {
         const profile = await getProfile({
-          username: decodeURIComponent(req.params.username)
+          username: decodeURIComponent(req.params.username),
         });
         if (!profile) {
           throw {
             httpStatus: 404,
-            message: "Profile Not Found"
+            message: "Profile Not Found",
           };
         }
         const { plugins, score, timestamp, game, enb, tag } = profile;
@@ -115,7 +115,7 @@ export const routes = [
           game,
           enb,
           tag,
-          files
+          files,
         });
       } catch (e) {
         console.log(e);
@@ -161,5 +161,5 @@ export const routes = [
         send(res, e.httpStatus || 500, e.message || null);
       }
     }
-  )
+  ),
 ];
