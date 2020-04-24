@@ -4,10 +4,12 @@ import { send, json } from "micro";
 import { uploadProfile } from "../database";
 import { getToken } from "../utils";
 
+import { Modlist } from "@modwatch/types";
+
 export const routes = [
   post("/loadorder", async (req: ServerRequest, res: ServerResponse) => {
     try {
-      const body = (await json(req)) as Modwatch.Profile;
+      const body = (await json(req)) as Modlist;
       const profile = {
         ...body,
         timestamp: new Date(),

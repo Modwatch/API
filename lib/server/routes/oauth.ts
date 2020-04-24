@@ -16,6 +16,8 @@ import {
 } from "../utils";
 import { getProfile, deleteProfile } from "../database";
 
+import { Modlist } from "@modwatch/types";
+
 const renderFileAsync = promisify(renderFile);
 
 const clients =
@@ -49,7 +51,7 @@ export const routes = [
   post("/oauth/authorize", async (req: ServerRequest, res: ServerResponse) => {
     const query = serialize(req.query);
     try {
-      const body = (await parse(req)) as Modwatch.Profile;
+      const body = (await parse(req)) as Modlist;
       const scopes = body.scopes || [];
       if (clients.every((c) => req.query.redirect_uri.indexOf(c) !== 0)) {
         res.statusCode = 301;

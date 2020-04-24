@@ -1,4 +1,4 @@
-import { MongoClient, Collection } from "mongodb";
+import { MongoClient, Collection, Cursor } from "mongodb";
 
 import { generateHash, validPassword, verifyToken } from "./utils";
 import sanitize from "mongo-sanitize";
