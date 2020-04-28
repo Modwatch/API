@@ -32,6 +32,23 @@ export async function getUsersList({
     .toArray();
 }
 
+export async function getUsersStream({
+  limit = 50,
+}: {
+  limit?: number;
+}): Promise<any> {
+  const modlist = await initializeModlistCollection();
+  return modlist
+    .find<Modlist>(
+      {},
+      {
+        sort: [["timestamp", -1]],
+      }
+    )
+    .project({ username: 1, timestamp: 1, score: 1, _id: 0 })
+    .limit(limit)
+}
+
 export async function getUsersCount(): Promise<number> {
   const modlist = await initializeModlistCollection();
   return modlist.estimatedDocumentCount();
