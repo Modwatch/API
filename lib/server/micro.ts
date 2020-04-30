@@ -7,7 +7,7 @@ const { routes } = require("./routes");
 const cors = corsBuilder();
 
 module.exports = cors(
-  compress(
+  // compress(
     router(...routes)
-  )
+  // )
 );
