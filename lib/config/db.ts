@@ -8,5 +8,5 @@ export const config = ({
   env: string;
 }) =>
   env === "production"
-    ? `mongodb://${username}:${password}@ds037283.mlab.com:37283/modwatch`
+    ? `mongodb://${username}:${password}@localhost:27017/modwatch`
     : "mongodb://localhost:27017/modwatch";

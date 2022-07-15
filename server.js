@@ -5,7 +5,7 @@ const config = {
   expressSecret: process.env.DBEXPRESSSECRET,
   jwtSecret: process.env.JWTSECRET,
   ip: process.env.IP || "0.0.0.0",
-  port: process.env.PORT || 3001,
+  port: process.env.PORT || 3000,
   env: process.env.NODE_ENV || "local"
 };
 

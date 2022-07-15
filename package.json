@@ -9,10 +9,12 @@
   "scripts": {
     "start": "pm2 start server.js",
     "restart": "pm2 restart all",
-    "dev": "micro ./dist/server/micro.js -p 3001",
-    "local": "cross-env MODWATCH_DEV=true nodemon server.js --delay 1 --watch ./lib",
+    "local": "node -r esbuild-register server.js",
     "prettier": "prettier --write '{server.js,lib/**/*.ts}'",
-    "build": "tsc && cp ./lib/server/oauth.ejs ./dist/server/"
+    "build": "tsc && cp ./lib/server/oauth.ejs ./dist/server/",
+    "pop": "node -r esbuild-register populate.ts",
+    "db": "docker run --rm -it --name mw-db -p 27017:27017 mongo",
+    "mongo": "docker exec -it mw-db mongosh"
   },
   "engines": {
     "node": ">= 12.14.0"
@@ -29,20 +31,24 @@
     "microrouter": "^3.1.3",
     "mongo-sanitize": "^1.0.1",
     "mongodb": "^3.4.0",
-    "urlencoded-body-parser": "^3.0.0",
-    "url-pattern": "^1.0.3"
+    "url-pattern": "^1.0.3",
+    "urlencoded-body-parser": "^3.0.0"
   },
   "devDependencies": {
+    "@modwatch/core": "^0.1.0",
     "@modwatch/types": "^0.3.0",
     "@types/micro": "^7.3.3",
     "@types/microrouter": "^3.1.1",
     "@types/mongodb": "^3.3.13",
     "@types/node": "^10.17.11",
+    "cross-env": "^7.0.3",
+    "esbuild-register": "^3.3.3",
     "micro-dev": "^3.0.0",
+    "minimist": "^1.2.6",
+    "node-fetch": "^3.2.6",
     "pm2": "^3.5.2",
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
-    "prompt": "^1.0.0",
     "typescript": "^3.7.3"
   },
   "private": true,
